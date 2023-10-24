@@ -29,14 +29,15 @@ class Consumer(AsyncWebsocketConsumer):
         tracker = DummyTracker()
         recommender = DummyRecommender()
         recommended = await recommender.predict(real_goods)
-        route_builder = DummyRouteBuilder(real_goods,recommended)
-        next_stop = route_builder.route[0]
+        route_builder = GreedyRouteBuilder()
+        route, coordinates = await route_builder.get_route(real_goods, recommended)
+        next_stop = route[0]
         old_direction = 0
         try:
             while True:
                 direction, man_coordinate = tracker.predict(None, destination_coords=(1, 1))
                 direction = random.random()*100
-                if man_coordinate == route_builder.coordinations[next_stop]:
+                if man_coordinate == coordinates[next_stop]:
                     # if destination in real_goods:
                     if next_stop in real_goods:
                         print(f"NEAR_REAL")
@@ -46,7 +47,7 @@ class Consumer(AsyncWebsocketConsumer):
                         print(f"NEAR_RECOMMENDED")
                         await self.send(text_data=json.dumps(
                             {"type": "NEAR_RECOMMENDED", "content": "Рядом с Вами RECOMMENDED"}))
-                    next_stop += route_builder.route[route_builder.route.index(next_stop)+1]
+                    next_stop += route[route.index(next_stop)+1]
                 if direction - old_direction:
                     old_direction = direction
                     await self.send(text_data=json.dumps({"type": "DIRECTION", "content": str(direction)}))

@@ -8,11 +8,14 @@ from ..models import Good
 
 class DummyRecommender(Recommender):
     async def predict(self, real_goods: list) -> list:
-        goods = await sync_to_async(Good.objects.all)()
-        recommended = [good for good in goods if good.id not in real_goods]
+        recommended = await self.get_goods(real_goods)
         # recommended = [uuid.uuid4, uuid.uuid4]
-        if len(goods) >= 2:
+        if len(recommended) >= 2:
             return recommended[:2]
         else:
              return []
+
+    @sync_to_async
+    def get_goods(self, real_goods):
+        return list(Good.objects.all().exclude(id__in=real_goods).values_list('id', flat=True))
 
