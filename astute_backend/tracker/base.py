@@ -2,6 +2,9 @@ from abc import ABC, abstractmethod
 
 
 class Tracker(ABC):
+    def __init__(self, annotations_path: list[str]):
+        pass
+
     @abstractmethod
     async def predict(self, frames, destination_coords: tuple[int]):
         """

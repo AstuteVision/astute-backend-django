@@ -15,6 +15,7 @@ from astute_backend.tracker.dummy import DummyTracker
 from django.conf import settings
 import logging
 
+from astute_backend.tracker.yolo import YoloTracker
 
 logger = logging.getLogger(__name__)
 
@@ -30,8 +31,8 @@ class Consumer(AsyncWebsocketConsumer):
         print(ast.literal_eval(text_data['text']))
         print(type(ast.literal_eval(text_data['text'])))
         real_goods = [uuid.UUID(str(u)) for u in ast.literal_eval(text_data['text'])]
-        tracker = DummyTracker()
         cameras = [cv2.VideoCapture(camera_url) for camera_url in settings.IP_CAMERAS_URLS]
+        tracker = YoloTracker(settings.IP_CAMERAS_ANNOTATIONS)
         recommender = DummyRecommender()
         recommended = await recommender.predict(real_goods)
         route_builder = GreedyRouteBuilder()
@@ -44,9 +45,7 @@ class Consumer(AsyncWebsocketConsumer):
                 if not all(successes):
                     logger.error("Could not read frame")
                     break
-                print(frames)
-                direction, man_coordinate = tracker.predict(None, destination_coords=(1, 1))
-                direction = random.random()*100
+                direction, man_coordinate = tracker.predict(frames, destination_coords=(1, 1))
                 if man_coordinate == coordinates[next_stop]:
                     # if destination in real_goods:
                     if next_stop in real_goods:

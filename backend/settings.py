@@ -141,3 +141,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 IP_CAMERAS_URLS = ["data/examples/1/1.mp4", "data/examples/1/2.mp4"]
 IP_CAMERAS_ANNOTATIONS = ["data/examples/1/1.json", "data/examples/1/2.json"]
+IDEAL_FRAMES_DIRECTORY = "data/examples/1/ideal_frames"
+
+REID_WEIGHTS_PATH = "/Users/arkadiysotnikov/PycharmProjects/ReId/osnet_ain_x1_0.pth"
+REID_MODEL_NAME = "osnet_ain_x1_0"
+REID_NUM_CLASSES = 702
