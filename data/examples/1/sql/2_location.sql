@@ -12,4 +12,4 @@ VALUES ('502626b1-508e-458c-a90f-e356d1fa15f0', 2, 2, 'Шкаф с сахаро�
 
 INSERT INTO astute_backend_location
 (id, coordinates_horizontal, coordinates_vertical, name, location_type_id)
-VALUES ('a14cefb7-23c6-4360-a0e5-815c4fede3d0', 3, 2, 'Шкаф с закусками', '26431182-a713-420c-bff0-b8f9af3b0ef6');
+VALUES ('a14cefb7-23c6-4360-a0e5-815c4fede3d0', 3, 2, 'Касса', '26431182-a713-420c-bff0-b8f9af3b0ef6');

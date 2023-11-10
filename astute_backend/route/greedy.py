@@ -33,8 +33,6 @@ class GreedyRouteBuilder(RouteBuilder):
                 next_point = coordinate
         return next_point
 
-
-
     async def __find_coords(self, real_goods: list, recommendations: list):
         coords = {}
         for good in real_goods:
