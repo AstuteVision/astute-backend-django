@@ -138,3 +138,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+IP_CAMERAS_URLS = ["data/examples/1/1.mp4", "data/examples/1/2.mp4"]
+IP_CAMERAS_ANNOTATIONS = ["data/examples/1/1.json", "data/examples/1/2.json"]

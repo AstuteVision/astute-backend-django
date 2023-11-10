@@ -4,6 +4,7 @@ import random
 import ast
 import uuid
 
+import cv2
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from astute_backend.recommender.dummy import DummyRecommender
@@ -11,12 +12,12 @@ from astute_backend.route.dummy import DummyRouteBuilder
 from astute_backend.route.greedy import GreedyRouteBuilder
 from astute_backend.tracker.dummy import DummyTracker
 
-CONST_cam_ips = "camera_ips.txt"
+from django.conf import settings
+import logging
 
-def get_urls() -> list[str]:
-    with open(CONST_cam_ips) as file:
-        streams_addresses = [line.rstrip() for line in file]
-    return streams_addresses
+
+logger = logging.getLogger(__name__)
+
 
 class Consumer(AsyncWebsocketConsumer):
     async def websocket_connect(self, event):
@@ -25,8 +26,12 @@ class Consumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def websocket_receive(self, text_data):
+        print("Received", text_data)
+        print(ast.literal_eval(text_data['text']))
+        print(type(ast.literal_eval(text_data['text'])))
         real_goods = [uuid.UUID(str(u)) for u in ast.literal_eval(text_data['text'])]
         tracker = DummyTracker()
+        cameras = [cv2.VideoCapture(camera_url) for camera_url in settings.IP_CAMERAS_URLS]
         recommender = DummyRecommender()
         recommended = await recommender.predict(real_goods)
         route_builder = GreedyRouteBuilder()
@@ -35,6 +40,11 @@ class Consumer(AsyncWebsocketConsumer):
         old_direction = 0
         try:
             while True:
+                successes, frames = zip(*[capture.read() for capture in cameras])
+                if not all(successes):
+                    logger.error("Could not read frame")
+                    break
+                print(frames)
                 direction, man_coordinate = tracker.predict(None, destination_coords=(1, 1))
                 direction = random.random()*100
                 if man_coordinate == coordinates[next_stop]:
