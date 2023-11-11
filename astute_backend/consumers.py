@@ -45,7 +45,7 @@ class Consumer(AsyncWebsocketConsumer):
                 if not all(successes):
                     logger.error("Could not read frame")
                     break
-                direction, man_coordinate = tracker.predict(frames, destination_coords=(1, 1))
+                direction, man_coordinate = tracker.predict(frames, destination_coords=next_stop, client_id=1)
                 if man_coordinate == coordinates[next_stop]:
                     # if destination in real_goods:
                     if next_stop in real_goods:
