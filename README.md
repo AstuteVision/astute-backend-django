@@ -34,6 +34,9 @@ python manage.py runserver 8000
 You can find docs here (data preparation step architecture diagram here):
 https://docs.google.com/document/d/1FWAimK3DmMpwVTPNKVr7HqskpLD-hsbV9DyeLAWkj4k/edit?usp=sharing
 
+## Little report about reid models
+![отчёт_по_моделям.png](resources%2F%D0%BE%D1%82%D1%87%D1%91%D1%82_%D0%BF%D0%BE_%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8F%D0%BC.png)
+
 ## Contacts
 If you have problems with running this project or you have some questions you can contact us by email:
 cotnikoarkady@gmail.com
